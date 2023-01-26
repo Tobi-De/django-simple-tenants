@@ -1,0 +1,70 @@
+[tool.ruff]
+extend-select = ["I"]
+
+[tool.pytest.ini_options]
+addopts = "--cov=simple_tenants/ --cov-report=term-missing"
+
+#[tool.mypy]
+#plugins = ["mypy_django_plugin.main"]
+#
+#[tool.django-stubs]
+#django_settings_module = "demo.demo.settings"
+
+[tool.hatch]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.version]
+source = "regex_commit"
+commit_extra_args = ["-e"]
+path = "simple_tenants/__init__.py"
+
+[tool.hatch.envs.default]
+python = "3.11"
+dependencies = [
+    "black",
+    "mypy",
+    "ruff",
+    "pytest",
+    "pytest-cov",
+    "django-stubs",
+]
+
+[tool.hatch.envs.default.scripts]
+test = "pytest"
+test-cov-xml = "pytest --cov-report=xml"
+lint = [
+  "black .",
+  "ruff --fix simple_tenants/",
+  "mypy simple_tenants/",
+]
+lint-check = [
+  "black --check .",
+  "ruff simple_tenants/",
+  "mypy simple_tenants/",
+]
+
+[build-system]
+requires = ["hatchling", "hatch-regex-commit"]
+build-backend = "hatchling.build"
+
+[project]
+name = "django-simple-tenants"
+authors = [
+  { name = "django-simple-tenants", email = "tobidegnon@proton.me" }
+]
+description = ""
+readme = "README.md"
+dynamic = ["version"]
+classifiers = [
+    "Programming Language :: Python :: 3 :: Only",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "django>=3"
+]
+
+[project.urls]
+Documentation = "https://Tobi-De.github.io/django-simple-tenants/"
+Source = "https://github.com/Tobi-De/django-simple-tenants"
