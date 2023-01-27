@@ -1,10 +1,14 @@
-from django.contrib.auth.models import User
+from simple_tenants.models import TenantAwareAbstractUser
 from django.db import models
 from simple_tenants.models import TenantAwareModel, AbstractTenant
 
 
 class Tenant(AbstractTenant):
     name = models.CharField(max_length=100, unique=True)
+
+
+class User(TenantAwareAbstractUser):
+    pass
 
 
 class Poll(TenantAwareModel):
