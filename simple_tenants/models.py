@@ -1,9 +1,13 @@
 from django.db import models
+from django.utils.text import slugify
 
 from .conf import conf
 from .managers import TenantAwareManager
 from .utils import get_current_tenant
-from django.utils.text import slugify
+
+# todo: excludes some url
+# and easy way to create first tenant
+# maybe commands
 
 
 class AbstractTenant(models.Model):

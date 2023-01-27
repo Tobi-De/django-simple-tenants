@@ -1,10 +1,13 @@
 from django.db.models import Manager, QuerySet
 
-from .utils import get_current_tenant, get_current_tenant_id
+from .utils import get_current_tenant, get_current_tenant_id, is_tenant_disabled
 
 
 class TenantAwareManager(Manager):
     def get_queryset(self):
+        if is_tenant_disabled():
+            return super().get_queryset()
+
         tenant_id = get_current_tenant_id()
 
         # If the manager was built from a queryset using

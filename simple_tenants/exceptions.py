@@ -1,2 +1,0 @@
-class TenantNotSet(Exception):
-    pass

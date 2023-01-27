@@ -1,5 +1,6 @@
 [tool.ruff]
 extend-select = ["I"]
+line-length = 120
 
 [tool.pytest.ini_options]
 addopts = "--cov=simple_tenants/ --cov-report=term-missing"

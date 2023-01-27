@@ -1,6 +1,3 @@
-from django.http import Http404
-
-from .conf import conf
 from .utils import set_tenant, tenant_from_request
 
 
