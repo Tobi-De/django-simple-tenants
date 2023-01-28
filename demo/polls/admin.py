@@ -6,7 +6,7 @@ from simple_tenants.admin import TenantAwareModelAdmin
 
 @admin.register(Poll)
 class PollAdmin(TenantAwareModelAdmin):
-    fields = ["question", "created_by", "pub_date"]
+    fields = ["question", "created_by", "pub_date", "file"]
     readonly_fields = ["pub_date"]
 
 

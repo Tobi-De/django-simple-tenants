@@ -10,6 +10,7 @@ from django.http import HttpRequest
 
 from .conf import conf
 from .errors import TenantNotFoundError, TenantNotSetError
+from django.utils import timezone
 
 
 class TenantState(TypedDict):
@@ -82,3 +83,8 @@ def tenant_context_disabled():
         yield
     finally:
         _local_tenant_state.reset(token)
+
+
+def get_upload_path(instance, filename: str) -> str:
+    str_date = timezone.now().date().strftime("%Y/%m/%d")
+    return f"{instance.tenant.subdomain}/{str_date}/{filename}"

@@ -2,6 +2,8 @@ from simple_tenants.models import TenantAwareAbstractUser
 from django.db import models
 from simple_tenants.models import TenantAwareModel, AbstractTenant
 
+from simple_tenants.utils import get_upload_path
+
 
 class Tenant(AbstractTenant):
     name = models.CharField(max_length=100, unique=True)
@@ -15,6 +17,7 @@ class Poll(TenantAwareModel):
     question = models.CharField(max_length=100)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     pub_date = models.DateTimeField(auto_now=True)
+    file = models.ImageField(upload_to=get_upload_path, blank=True)
 
     def __str__(self):
         return self.question

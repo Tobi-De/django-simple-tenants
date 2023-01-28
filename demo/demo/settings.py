@@ -109,3 +109,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 TENANT_MODEL = "polls.Tenant"
+
+
+MEDIA_ROOT = str(BASE_DIR / "media")
+MEDIA_URL = "/media/"

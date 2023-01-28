@@ -7,10 +7,7 @@ class TenantMiddleware:
 
     def __call__(self, request):
         tenant = tenant_from_request(request)
-        # if not tenant and request.path not in conf.TENANT_EXCLUDE_URLS:
-        #     raise Http404("Tenant not found")
-
-        request.tenant = tenant
         set_tenant(tenant)
+        request.tenant = tenant
         response = self.get_response(request)
         return response

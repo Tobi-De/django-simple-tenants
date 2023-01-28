@@ -3,7 +3,8 @@ extend-select = ["I"]
 line-length = 120
 
 [tool.pytest.ini_options]
-addopts = "--cov=simple_tenants/ --cov-report=term-missing"
+addopts = "--cov=simple_tenants/ --cov-report=term-missing --ds=tests.settings --reuse-db"
+python_files = ["tests.py", "test_*.py"]
 
 #[tool.mypy]
 #plugins = ["mypy_django_plugin.main"]
@@ -24,11 +25,13 @@ path = "simple_tenants/__init__.py"
 [tool.hatch.envs.default]
 python = "3.11"
 dependencies = [
+    "Pillow",
     "black",
     "mypy",
     "ruff",
     "pytest",
     "pytest-cov",
+    "pytest-django",
     "django-stubs",
 ]
 
