@@ -37,7 +37,7 @@ def tenant_from_request(request: HttpRequest) -> models.Model:
     subdomain = hostname.split(".")[0]
     tenant_model = get_tenant_model()
     try:
-        return tenant_model.objects.get(subdomain=subdomain)
+        return tenant_model.objects.get(prefx=subdomain)
     except tenant_model.DoesNotExist:
         raise TenantNotFoundError(f"Tenant with subdomain {subdomain} not found")
 
@@ -87,4 +87,4 @@ def tenant_context_disabled():
 
 def get_upload_path(instance, filename: str) -> str:
     str_date = timezone.now().date().strftime("%Y/%m/%d")
-    return f"{instance.tenant.subdomain}/{str_date}/{filename}"
+    return f"{instance.tenant.prefix}/{str_date}/{filename}"

@@ -10,12 +10,12 @@ class Settings:
     """
 
     @property
-    def TENANT_MODEL(self) -> str:
-        return getattr(settings, "TENANT_MODEL")
+    def SIMPLE_TENANTS_MODEL(self) -> str:
+        return getattr(settings, "SIMPLE_TENANTS_MODEL")
 
     @property
-    def TENANT_EXCLUDE_URLS(self) -> list[str]:
-        return getattr(settings, "TENANT_EXCLUDE_URLS", [reverse("admin:login")])
+    def SIMPLE_TENANTS_FIELD(self) -> str:
+        return getattr(settings, "SIMPLE_TENANTS_FIELD", "tenant")
 
 
 conf = Settings()

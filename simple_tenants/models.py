@@ -8,21 +8,16 @@ from .managers import TenantAwareManager
 from .utils import get_current_tenant, tenant_context_disabled
 
 
-# todo: excludes some url
-# and easy way to create first tenant
-# maybe commands
-
-
 class AbstractTenant(models.Model):
 
-    subdomain = models.CharField(max_length=15, unique=True, db_index=True)
+    prefix = models.CharField(max_length=15, unique=True, db_index=True)
 
     class Meta:
         abstract = True
 
     def save(self, *args, **kwargs):
         if self._state.adding:
-            self.subdomain = slugify(self.subdomain)
+            self.prefix = slugify(self.prefix)
 
         super().save(*args, **kwargs)
 
