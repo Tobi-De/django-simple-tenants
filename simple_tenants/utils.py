@@ -7,10 +7,10 @@ from typing import TypedDict
 from django.apps import apps
 from django.db import models
 from django.http import HttpRequest
+from django.utils import timezone
 
 from .conf import conf
 from .errors import TenantNotFoundError, TenantNotSetError
-from django.utils import timezone
 
 
 class TenantState(TypedDict):
@@ -24,7 +24,7 @@ _local_tenant_state: ContextVar[TenantState] = ContextVar(
 
 
 def get_tenant_model() -> type[models.Model]:
-    app_label, model_name = conf.TENANT_MODEL.split(".")
+    app_label, model_name = conf.SIMPLE_TENANTS_MODEL.split(".")
     return apps.get_model(app_label, model_name)  # type: ignore
 
 
@@ -37,7 +37,7 @@ def tenant_from_request(request: HttpRequest) -> models.Model:
     subdomain = hostname.split(".")[0]
     tenant_model = get_tenant_model()
     try:
-        return tenant_model.objects.get(prefx=subdomain)
+        return tenant_model.objects.get(prefix=subdomain)
     except tenant_model.DoesNotExist:
         raise TenantNotFoundError(f"Tenant with subdomain {subdomain} not found")
 

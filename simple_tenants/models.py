@@ -1,4 +1,4 @@
-from django.contrib.auth.models import UserManager, AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.utils.text import slugify
 
@@ -24,7 +24,7 @@ class AbstractTenant(models.Model):
 
 class TenantAwareModel(models.Model):
     tenant = models.ForeignKey(
-        conf.TENANT_MODEL, on_delete=models.CASCADE, editable=False
+        conf.SIMPLE_TENANTS_MODEL, on_delete=models.CASCADE, editable=False
     )
 
     objects = TenantAwareManager()
@@ -35,7 +35,7 @@ class TenantAwareModel(models.Model):
 
     def save(self, *args, **kwargs):
         if self._state.adding:
-            self.tenant = get_current_tenant()
+            setattr(self, conf.SIMPLE_TENANTS_FIELD, get_current_tenant())
 
         super().save(*args, **kwargs)
 
@@ -46,7 +46,7 @@ class TenantAwareUserManager(UserManager, TenantAwareManager):
 
 class TenantAwareAbstractUser(AbstractUser):
     tenant = models.ForeignKey(
-        conf.TENANT_MODEL, on_delete=models.CASCADE, editable=False, null=True
+        conf.SIMPLE_TENANTS_MODEL, on_delete=models.CASCADE, editable=False, null=True
     )
 
     objects = TenantAwareUserManager()
@@ -58,7 +58,7 @@ class TenantAwareAbstractUser(AbstractUser):
     def save(self, *args, **kwargs):
         try:
             if self._state.adding:
-                self.tenant = get_current_tenant()
+                setattr(self, conf.SIMPLE_TENANTS_FIELD, get_current_tenant())
         except TenantNotSetError:
             if self.is_superuser:
                 with tenant_context_disabled():

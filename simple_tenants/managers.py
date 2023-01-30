@@ -1,5 +1,6 @@
 from django.db.models import Manager, QuerySet
 
+from .conf import conf
 from .utils import get_current_tenant, get_current_tenant_id, is_tenant_disabled
 
 
@@ -13,18 +14,17 @@ class TenantAwareManager(Manager):
         # If the manager was built from a queryset using
         # SomeQuerySet.as_manager() or SomeManager.from_queryset(),
         # we want to use that queryset instead of TenantAwareQuerySet.
+        kwargs = {f"{conf.SIMPLE_TENANTS_FIELD}__id": tenant_id}
         if self._queryset_class != QuerySet:
-            return super().get_queryset().filter(tenant__id=tenant_id)
+            return super().get_queryset().filter(**kwargs)
 
-        return TenantAwareQuerySet(self.model, using=self._db).filter(
-            tenant__id=tenant_id
-        )
+        return TenantAwareQuerySet(self.model, using=self._db).filter(**kwargs)
 
 
 class TenantAwareQuerySet(QuerySet):
     def bulk_create(self, objs, *args, **kwargs):
         for obj in objs:
-            obj.tenant = get_current_tenant()
+            setattr(obj, conf.SIMPLE_TENANTS_FIELD, get_current_tenant())
 
         super().bulk_create(objs, *args, **kwargs)
 

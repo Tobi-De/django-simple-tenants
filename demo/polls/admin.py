@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Choice, Poll, Vote
+from .models import Choice, Poll, Vote, User
 from simple_tenants.admin import TenantAwareModelAdmin
 
 
@@ -12,3 +12,4 @@ class PollAdmin(TenantAwareModelAdmin):
 
 admin.site.register(Choice)
 admin.site.register(Vote)
+admin.site.register(User)
