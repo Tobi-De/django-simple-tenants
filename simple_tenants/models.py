@@ -59,9 +59,10 @@ class TenantAwareAbstractUser(AbstractUser):
         try:
             if self._state.adding:
                 setattr(self, conf.SIMPLE_TENANTS_FIELD, get_current_tenant())
-        except TenantNotSetError:
+        except TenantNotSetError as e:
             if self.is_superuser:
                 with tenant_context_disabled():
                     super().save(*args, **kwargs)
             else:
-                super().save(*args, **kwargs)
+                raise e
+        super().save(*args, **kwargs)
