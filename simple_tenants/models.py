@@ -12,12 +12,14 @@ class AbstractTenant(models.Model):
 
     prefix = models.CharField(max_length=15, unique=True, db_index=True)
 
+    populate_prefix_from = "prefix"
+
     class Meta:
         abstract = True
 
     def save(self, *args, **kwargs):
         if self._state.adding:
-            self.prefix = slugify(self.prefix)
+            self.prefix = slugify(getattr(self, self.populate_prefix_from))
 
         super().save(*args, **kwargs)
 
