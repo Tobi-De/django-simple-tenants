@@ -9,5 +9,4 @@ class TenantMiddleware:
         tenant = tenant_from_request(request)
         set_tenant(tenant)
         request.tenant = tenant
-        response = self.get_response(request)
-        return response
+        return self.get_response(request)

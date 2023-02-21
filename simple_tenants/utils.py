@@ -38,8 +38,10 @@ def tenant_from_request(request: HttpRequest) -> models.Model:
     tenant_model = get_tenant_model()
     try:
         return tenant_model.objects.get(prefix=subdomain)
-    except tenant_model.DoesNotExist:
-        raise TenantNotFoundError(f"Tenant with subdomain {subdomain} not found")
+    except tenant_model.DoesNotExist as e:
+        raise TenantNotFoundError(
+            f"Tenant with subdomain {subdomain} not found"
+        ) from e
 
 
 def get_current_tenant() -> models.Model:
