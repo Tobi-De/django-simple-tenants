@@ -26,7 +26,7 @@ class TenantAwareQuerySet(QuerySet):
         for obj in objs:
             setattr(obj, conf.SIMPLE_TENANTS_FIELD, get_current_tenant())
 
-        super().bulk_create(objs, *args, **kwargs)
+        return super().bulk_create(objs, *args, **kwargs)
 
     def as_manager(cls):
         manager = TenantAwareManager.from_queryset(cls)()
